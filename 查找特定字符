@@ -1,0 +1,113 @@
+import re
+## in、not in
+# 使用in或者not in来进行判断字符串中是否包含有特定的字符
+a='这个暑假的上课时间还有很长时间'
+b=['暑假','上课','时间','很长']
+n=0
+
+# 使用in、not in来进行判断，字符串中有无特定的字符
+for i in b:
+    if i in a:
+        n+=1
+        print(i in a)
+print(f'这串字符中包含的关键词的个数有{n}个')
+# 结果
+# 结果返回的是布尔数据
+# True
+# True
+# True
+# True
+# 这串字符中包含的关键词的个数有4个
+
+## re.findall
+# 使用findall来从字符串中找到对应的字符
+a='这个暑假的上课时间还有很长时间，url="https://www.baidu.com"'
+print(re.findall('url="(.*?)"',a))
+# 结果
+# 结果返回的是一个列表
+# ['https://www.baidu.com']
+
+## re.match
+# 使用re.match来对字符串中的特定字符进行匹配，可以得到匹配的元组
+import re
+fullstr = 'name:alice,result:89'
+result = re.match('name:(\w+),result:(\d+)', fullstr)
+print(result)#<re.Match object; span=(0, 20), match='name:alice,result:89'>
+print(result.group(0))#name:alice,result:89
+print(result.group(1))#alice
+print(result.group(2))#89
+print(result.group())#name:alice,result:89
+# 结果
+# <re.Match object; span=(0, 20), match='name:alice,result:89'>
+# name:alice,result:89
+# alice
+# 89
+# name:alice,result:89
+
+## re.search
+# re.search会匹配整个字符串，并返回第一个成功的匹配。如果匹配失败，则返回None
+import re
+fullstr = 'class:1班,name:alice,name:wee,result:89'
+result = re.search('name:(\w+),result:(\d+)', fullstr)
+print(result)#<re.Match object; span=(20, 38), match='name:wee,result:89'>
+print(result.group(0))#name:wee,result:89
+print(result.group(1))#wee
+print(result.group(2))#89
+print(result.group())#name:wee,result:89
+# 结果
+# <re.Match object; span=(20, 38), match='name:wee,result:89'>
+# name:wee,result:89
+# wee
+# 89
+# name:wee,result:89
+
+## re.sub
+fullstr = 'name:alice,result:89'
+res1 = re.sub('(?P<value>\d+)','233',fullstr)#通过定义得到的name来得到数值
+print(res1)
+# 结果
+# name:alice,result:233
+
+## re.compile和findall
+# re.compile，是将一个正则表达式中的字符串形式编译一个Pattern对象
+content = 'Hello, I am Jerry, from Chongqing, a montain city, nice to meet you……'
+# re.compile将正则表达式的样式编译为一个 正则表达式对象
+regex = re.compile('\w*o\w*')#匹配字母数字及下划线，o 表示匹配字符o，\w* 表示匹配由大小写英文字母数字和下划线组成的0个或多个字符
+x = regex.findall(content)
+print(x)
+
+## re.compile和search
+content = 'Hello, I am Jerry, from Chongqing, a montain city, nice to meet you……'
+regex = re.compile('\w*o\w*')
+y = regex.search(content)
+print(y)
+print(type(y))
+print(y.group())
+print(y.span())
+# 结果
+# <re.Match object; span=(0, 5), match='Hello'>
+# <class 're.Match'>
+# Hello
+# (0, 5)
+
+## re.compile和match
+content = 'Hello, I am Jerry, from Chongqing, a montain city, nice to meet you……'
+regex = re.compile('\w*o\w*')
+y = regex.match(content)
+print(y)
+print(type(y))
+print(y.group())
+print(y.span())
+# 结果
+# <re.Match object; span=(0, 5), match='Hello'>
+# <class 're.Match'>
+# Hello
+# (0, 5)
+
+## re.split
+# re.split用来从字符串中得到多个特定的字符
+import re
+s='abc,  abc,  defg,  dds'
+re.split(',',s)
+# 结果
+# ['abc,  abc,  defg,  dds']
