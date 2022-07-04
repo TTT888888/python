@@ -1,0 +1,138 @@
+#使用python对于word中的内容进行修改字体的格式
+import docx
+import requests
+from tqdm import tqdm
+
+doc=docx.Document() #使用docx来进行创建一个word文件，使用手动创建的word文件是不行的
+doc.save('s.docx')#创建一个word文件
+doc=docx.Document('s.docx')#打开刚刚创建的word文件
+doc.add_paragraph('这爱不落幕，忘了心事的国度，'   #向word中写入内容
+                                    '你所在之处，孤单都被征服，'
+                                    '铁铸的招牌，错落着就像，'
+                                    '一封封城市献给天空的情书，'
+                                    '当街灯亮起，Havana漫步，'
+                                    '这是世上最美丽的那双人舞。')
+doc.save('s.docx')#保存创建的word文件
+# doc=docx.Document('s.docx')
+run_2= doc.paragraphs[0].runs[0]#得到第一个段落中的内容,进行格式的设置
+# 设置字体格式
+run_2.font.name = 'Times New Roman'  # 注：设置 run 中的西文字体,使得英文和数字为新罗马
+# 设置中文字体
+# 需导入 qn 模块
+from docx.oxml.ns import qn
+from docx.shared import RGBColor, Pt
+run_2.font.element.rPr.rFonts.set(qn('w:eastAsia'),'宋体')#设置中文字体为宋体
+# 设置字体大小
+run_2.font.size = Pt(14)#设置字体大小为14
+# 设置加粗
+run_2.font.bold = True#设置字体加粗
+# 设置斜体
+run_2.font.italic = True#设置字体为斜体
+# 置字体颜色 需导入 rgb 颜色模块
+
+run_2.font.color.rgb = RGBColor(255,55,55) # 设置字体颜色为红色
+doc.save('s.docx')#保存设置的文件
+
+
+#当word中的内容为新加入的内容时，可以对于该部分新加入的内容进行字体格式的改变。
+import docx
+doc=docx.Document() #使用docx来进行创建一个word文件，使用手动创建的word文件是不行的
+doc.save('s.docx')#创建一个word文件
+doc=docx.Document('s.docx')#打开刚刚创建的word文件
+#如果word中的内容是新加入的,则对于这部分新加入的内容进行改变字体的格式
+run_2 = doc.add_paragraph().add_run('这爱不落幕，忘了心事的国度，'
+                                    '你所在之处，孤单都被征服，'
+                                    '铁铸的招牌，错落着就像，'
+                                    '一封封城市献给天空的情书，'
+                                    '当街灯亮起，Havana漫步，'
+                                    '这是世上最美丽的那双人舞。')
+# 设置字体格式
+run_2.font.name = 'Times New Roman'  # 注：这个好像设置 run 中的西文字体
+# 设置中文字体
+# 需导入 qn 模块
+from docx.oxml.ns import qn
+from docx.shared import RGBColor, Pt
+run_2.font.element.rPr.rFonts.set(qn('w:eastAsia'),'楷体')#设置中文字体为楷体
+# 设置字体大小
+run_2.font.size = Pt(14)#设置字体的大小为14号
+# 设置加粗
+run_2.font.bold = True#设置字体加粗
+# 设置斜体
+run_2.font.italic = True#设置字体为斜体
+# 设置字体颜色 需导入 rgb 颜色模块
+from docx.shared import RGBColor, Pt
+
+run_2.font.color.rgb = RGBColor(255,55,55) # 设置字体的颜色为红色
+
+doc.save('s.docx')#保存设置的文件
+
+
+#将图片内容写入到word中
+def del_image_url():
+    j = 0
+    doc3 = docx.Document()
+    doc3.save('菜单100例.docx')
+    list = ['菜单0-10例.docx', '菜单10-20例.docx', '菜单20-30例.docx', '菜单30-40例.docx', '菜单40-50例.docx', '菜单50-60例.docx', '菜单60-70例.docx', '菜单70-80例.docx', '菜单80-90例.docx', '菜单90-100例.docx']
+    doc3 = docx.Document('菜单100例.docx')
+    for i in range(10):
+        doc2 = docx.Document(list[i])
+        for i in range(len(doc2.paragraphs)):
+            if doc2.paragraphs[i].text[0:10] == '最总的成品的照片地址':
+                image = 'images/{}.jpg'.format(j)
+                j += 1
+                try:
+                  doc3.add_picture(image, width=Inches(6), height=Inches(3))
+                except Exception:
+                    pic_tmp = Image.open(image)
+                    # 如果格式有问题，就用save转换成默认的jpg格式
+                    pic_tmp.save(image)
+                    # 把处理后的图片放进Document变量doc中
+                    doc.add_picture(image, width=Inches(6), height=Inches(3))
+            else:
+                run = doc3.add_paragraph().add_run(doc2.paragraphs[i].text)
+                run.font.name = 'Times New Roman'
+                run.font.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
+                # 设置字体大小
+                run.font.size = Pt(14)
+                if run.text[0:4] == '菜品简介':
+                    run.font.bold = True
+                    run.font.color.rgb = RGBColor(255, 55, 55)  # 红色
+
+    doc3.save('菜单100例.docx')
+
+
+#使用os创建文件夹，
+import os 
+def download_images():
+    if not os.path.isfile('./images'):#如果没有文件夹
+        os.mkdir('./images')#创建images文件夹
+    j = 0
+    doc4 = docx.Document('菜单100例.docx')#创建word文件
+    for i in tqdm(range(len(doc4.paragraphs))):#将word文件中的所有的段落，进行统计
+        if doc4.paragraphs[i].text[0:10] == '最总的成品的照片地址':#进行word文件中的段落匹配，得到照片的下载地址
+            url = doc4.paragraphs[i].text.strip('最总的成品的照片地址:')#得到照片的下载地址
+            response1 = requests.get(url).content#得到照片的内容
+            with open('images/{}.jpg'.format(j), 'wb') as f:#将照片进行保存
+                f.write(response1)
+            j += 1#对照片进行标记序号
+
+
+
+#写入文本文件
+with open("recipe_list.txt", "r") as f:
+    data1=f.readlines() #读取txt文本中的所有行的内容
+#对于每行中的内容都进行提取    
+for i in range(100) :
+  for j in range(4):
+    l=data1[4*i+j].strip('\n')#对于每行中的内容进行去除换行符,得到每行中的内容
+
+#得到字符串中相应的字符            
+s='我的家乡在太和'
+print(s[0:3])#得到每行字符中的内容   
+
+#得到word文件，并将word文件中的每段内容都打印出来  
+import docx    
+doc = docx.Document('multipleParagraphs.docx')
+for i in range(len(doc.paragraphs)):
+   print(doc.paragraphs[i].text)   
+   
