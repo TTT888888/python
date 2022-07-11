@@ -1,0 +1,13 @@
+import os
+def download_images():
+    if not os.path.isfile('./images'):#检查有无该文件夹
+        os.mkdir('./images')#如果没有，就创建
+    j = 0
+    doc4 = docx.Document('菜单100例.docx')#读取文件
+    for i in tqdm(range(len(doc4.paragraphs))):#每段都读取
+        if doc4.paragraphs[i].text[0:10] == '最总的成品的照片地址':#检查含有下载链接的文字段
+            url = doc4.paragraphs[i].text.strip('最总的成品的照片地址:')#得到下载地址
+            response1 = requests.get(url).content#得到下载的照片
+            with open('images/{}.jpg'.format(j), 'wb') as f:#创建照片文件
+                f.write(response1)#将下载的文件保存为照片
+            j += 1#计量下载的照片数量，给下载的照片命名
