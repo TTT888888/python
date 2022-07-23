@@ -1,0 +1,21 @@
+a='a,b,c,w'
+a=a.replace(',','w')#replace可以对字符串中的部分内容进行替换
+print(a)
+结果：
+awbwcww
+
+a='a,b,c,w'
+a=a.split(',')#使用split对于字符串进行分割，得到列表
+print(a)
+结果：
+['a', 'b', 'c', 'w']
+
+a='aaa,b,c,waawwwwwaaaaa'
+a=a.strip('a')#strip是行首尾处理函数，可以删掉指定的行首或行尾字符串。
+print(a)
+结果：
+,b,c,waawwwww
+
+a.strip('a')#表示：删掉行首和行尾所有的a
+如果不填参数，默认删掉行首和行尾的换行符‘\n’
+
